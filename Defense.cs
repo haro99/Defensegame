@@ -5,7 +5,7 @@ using UnityEngine;
 public class Defense : MonoBehaviour
 {
     public List<GameObject> Target = new List<GameObject>();
-    public GameObject Attackobj;
+    public GameObject Attackobj, Bom;
     public bool Coroutinerun;
     // Start is called before the first frame update
     void Start()
@@ -23,9 +23,13 @@ public class Defense : MonoBehaviour
     {
         while (true)
         {
-            Enemymove enemymove = Attackobj.GetComponent<Enemymove>();
+            //Enemymove enemymove = Attackobj.GetComponent<Enemymove>();
+            Vector2 offset = Target[0].transform.position - transform.position;
+            GameObject bom = Instantiate(Bom, transform.position, Quaternion.identity);
 
-            enemymove.Damage(10);
+            bom.GetComponent<Rigidbody2D>().AddForce(offset.normalized * 5);
+
+            //enemymove.Damage(10);
 
             yield return new WaitForSeconds(3f);
         }

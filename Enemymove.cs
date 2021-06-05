@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemymove : MonoBehaviour
 {
+    public GameObject GameManager;
     public LineManager lineManager;
+    public Slider Hpslider;
     public Vector3 nextposition;
-    public int hp, nextnumber, maxnumber;
+    public int hp, nextnumber, maxnumber, dropmoney;
 
     // Start is called before the first frame update
     void Start()
     {
         lineManager = GameObject.Find("LineManager").GetComponent<LineManager>();
+        GameManager = GameObject.Find("GameManager");
         maxnumber = lineManager.getLinenumber();
         nextposition = lineManager.Nextposition(nextnumber);
     }
@@ -40,7 +44,7 @@ public class Enemymove : MonoBehaviour
             {
 
                 Debug.Log("ハートが減りました");
-                GameObject.Find("GameManager").GetComponent<Enemyset>().Enemydead();
+                GameManager.GetComponent<GameManager>().LifeDamage();
                 Destroy(gameObject);
             }
         }
@@ -50,11 +54,12 @@ public class Enemymove : MonoBehaviour
     {
         hp -= damage;
         Debug.Log(hp);
+        Hpslider.value = hp;
 
         if (hp <= 0)
         {
             Debug.Log("倒されました");
-            GameObject.Find("GameManager").GetComponent<Enemyset>().Enemydead();
+            GameManager.GetComponent<GameManager>().Enemydead(dropmoney);
             Destroy(gameObject);
         }
     }
